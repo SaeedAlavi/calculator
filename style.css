@@ -1,0 +1,88 @@
+header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    height: 15vh;
+    /*border: .001vw black solid;*/
+    margin-bottom: 1vh;
+}
+
+
+
+.body {
+    height: 80vh;
+    /*border : 2px solid black;*/
+    display: flex;
+    flex-direction: row;
+}
+
+
+.mainCalBody{
+    height: 80vh;
+    width: 40vw;
+    border : .001vw solid black;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+
+
+}
+
+.leftSideBody{
+    width: 30vw;
+    height: 80vh;
+    display: inline-block;
+    /*border : .001vw solid black;*/
+
+
+}
+
+.rightSideBody{
+    width: 30vw;
+    height: 80vh;
+    /*display: inline-block;*/
+    /*border : .001vw solid black;*/
+}
+
+.screen{
+    width:inherit;
+    height: 10vh;
+    border: .005vw solid black;
+    border-radius: 15px;
+
+}
+
+.row{
+    display: flex;
+    align-items:center;
+    justify-content: space-around;
+    width: inherit;
+    height: 12vh;
+    /*border: .001vw solid black;*/
+}
+
+.button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 7vh;
+    width: 8vw;
+    background-color: aliceblue ;
+    border: .001vw solid black;
+    border-radius: 15px;
+    box-shadow: 1px 1px 5px 0 #000000;
+    /*-webkit-box-shadow: 1px 1px 5px 0 #000000;*/
+    /*-moz-box-shadow: 1px 1px 5px 0 #000000;*/
+    /*top: 4px;*/
+    /*left: 4px;*/
+    /*-webkit-transition: background-color 1s linear;*/
+    transition: background-color .3s linear;
+
+
+}
+
+.button:hover{
+    background-color: #00B00C;
+}
+
