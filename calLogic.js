@@ -10,70 +10,88 @@ let decimalCounter = 0;
 
 $(document).ready(function() {
 
-    $('.number').on("click", function ()
-    {
-
-        let value = $(this).text();
-
-        if (allowNumber === true)
-        {
-            if (value==='.' && decimalCounter === 1)
-            {
-                return;
-            }
-
-            else
-            {
-
-                if (value === '.' && decimalCounter === 0)
-                {
-                    decimalCounter = 1;
-                }
-
-                mainArray[mainArray.length - 1] += value;
-                displayArray = mainArray.join("");
-                // print();
-                console.log(mainArray);
-
-            }
-        }
-
-        else
-        {
-            mainArray=[''];
-            mainArray[mainArray.length - 1] += value;
-            displayArr = mainArray.join("");
-            // print();
-            allowNumber = true;
-
-        }
-
-
-    });
-
-
-    $('.operator').on("click",function()
-    {
-
-        // operatorCheck = 1;
-        // decimalCounter = 0;
-        let operator = $(this).text();
-
-
-        // if ( mainArray[mainArray.length-1] === '' && (mainArray[mainArray.length-2] !== "(" &&  mainArray[mainArray.length-2] !== ")" ) )
-        // {
-        //     mainArray.splice((mainArray.length-2),2);
-        // }
-        mainArray.push(operator);
-        mainArray.push('');
-        displayArray = mainArray.join("");
-        // print();                                    // print the display
-        allowNumber = true;          //let array to accept new number
-        console.log(mainArray);
-
-    });
-
-    $('#equal').on("click",doMath);
+    $('.number').on("click", getNumbers);
+    $('.operator').on("click",getOperators);
+    $('.equal').on("click",doMath);
 
 
 });
+
+function getNumbers() {
+
+    let value = $(this).text();
+
+    if (allowNumber === true) {
+        if (value === '.' && decimalCounter === 1) {
+            return;
+        }
+
+        else {
+
+            if (value === '.' && decimalCounter === 0) {
+                decimalCounter = 1;
+            }
+
+            mainArray[mainArray.length - 1] += value;
+            displayArray = mainArray.join("");
+            console.log(mainArray);
+
+        }
+    }
+
+    else {
+        mainArray = [''];
+        mainArray[mainArray.length - 1] += value;
+        displayArr = mainArray.join("");
+        allowNumber = true;
+
+    }
+
+}
+
+function getOperators()
+{
+
+    let operator = $(this).text();
+    mainArray.push(operator);
+    mainArray.push('');
+    displayArray = mainArray.join("");
+    allowNumber = true;
+    console.log(mainArray);
+
+}
+
+function doMath() {
+
+    console.log("main array after eqaul sign", mainArray);
+
+    while (mainArray.length > 1) {
+
+        for (let i = mainArray.length - 1; i >= 0; i--) {
+
+           if (mainArray[i] === "/") {
+               if (parseFloat(mainArray[i + 1]) === 0) {
+                   console.log("Error");
+                   return;
+               }
+
+               else {
+                   mainArray[i - 1] = parseFloat(mainArray[i - 1]) / parseFloat(mainArray[i + 1]);
+                   mainArray.splice(i, 2);
+                   console.log(mainArray);
+               }
+           }
+
+
+           if (mainArray[i] === "X") {
+               mainArray[i - 1] = parseFloat(mainArray[i - 1]) * parseFloat(mainArray[i + 1]);
+               mainArray.splice(i, 2);
+               console.log(mainArray);
+
+           }
+
+
+
+        }
+    }
+}
