@@ -67,7 +67,7 @@ function doMath() {
 
     while (mainArray.length > 1) {
 
-        for (let i = mainArray.length - 1; i >= 0; i--) {
+        for (let i = 0; i <= mainArray.length-1; i++) {
 
            if (mainArray[i] === "/") {
                if (parseFloat(mainArray[i + 1]) === 0) {
@@ -78,6 +78,7 @@ function doMath() {
                else {
                    mainArray[i - 1] = parseFloat(mainArray[i - 1]) / parseFloat(mainArray[i + 1]);
                    mainArray.splice(i, 2);
+                   i = i-1;
                    console.log(mainArray);
                }
            }
@@ -86,12 +87,31 @@ function doMath() {
            if (mainArray[i] === "X") {
                mainArray[i - 1] = parseFloat(mainArray[i - 1]) * parseFloat(mainArray[i + 1]);
                mainArray.splice(i, 2);
+               i = i-1;
                console.log(mainArray);
 
            }
-
-
-
         }
+
+        for (let i = 0; i <= mainArray.length-1 ; i++) {
+
+            if (mainArray[i] === "+") {
+                mainArray[i - 1] = parseFloat(mainArray[i - 1]) + parseFloat(mainArray[i + 1]);
+                mainArray.splice(i, 2);
+                i = i-1;
+                console.log(mainArray);
+
+            }
+
+            if (mainArray[i] === "-") {
+                mainArray[i - 1] = parseFloat(mainArray[i - 1]) - parseFloat(mainArray[i + 1]);
+                mainArray.splice(i, 2);
+                i = i-1;
+                console.log(mainArray);
+
+            }
+        }
+
+
     }
 }
