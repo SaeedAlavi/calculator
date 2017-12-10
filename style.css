@@ -50,6 +50,7 @@ header{
     height: 10vh;
     border: .005vw solid black;
     border-radius: 15px;
+    font-size: 40px;
 
 }
 
@@ -84,5 +85,9 @@ header{
 
 .button:hover{
     background-color: #00B00C;
+}
+
+#result{
+    text-align: right;
 }
 

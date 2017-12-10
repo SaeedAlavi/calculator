@@ -1,5 +1,5 @@
 let mainArray = [''];
-let displayArray = [''];
+let display = null;
 let allowNumber = true;
 let decimalCounter = 0;
 
@@ -13,6 +13,7 @@ $(document).ready(function() {
     $('.number').on("click", getNumbers);
     $('.operator').on("click",getOperators);
     $('.equal').on("click",doMath);
+    $('#clear').on("click",clearAll)
 
 
 });
@@ -33,7 +34,8 @@ function getNumbers() {
             }
 
             mainArray[mainArray.length - 1] += value;
-            displayArray = mainArray.join("");
+            display = mainArray.join("");
+            print();
             console.log(mainArray);
 
         }
@@ -42,7 +44,7 @@ function getNumbers() {
     else {
         mainArray = [''];
         mainArray[mainArray.length - 1] += value;
-        displayArr = mainArray.join("");
+        display = mainArray.join("");
         allowNumber = true;
 
     }
@@ -55,7 +57,8 @@ function getOperators()
     let operator = $(this).text();
     mainArray.push(operator);
     mainArray.push('');
-    displayArray = mainArray.join("");
+    display = mainArray.join("");
+    print();
     allowNumber = true;
     console.log(mainArray);
 
@@ -84,7 +87,7 @@ function doMath() {
            }
 
 
-           if (mainArray[i] === "X") {
+           if (mainArray[i] === "x") {
                mainArray[i - 1] = parseFloat(mainArray[i - 1]) * parseFloat(mainArray[i + 1]);
                mainArray.splice(i, 2);
                i = i-1;
@@ -108,10 +111,32 @@ function doMath() {
                 mainArray.splice(i, 2);
                 i = i-1;
                 console.log(mainArray);
+                console.log("lemgth:",mainArray.length);
 
             }
         }
 
 
     }
+
+    // display = mainArray.join("");
+    console.log("display:",display);
+    $('#result').text(mainArray)
+
+}
+
+
+function print()
+{
+    console.log("in print");
+    // $('#result').text(display);
+    $('#history').text(display);
+
+
+}
+
+function clearAll(){
+    $('#result').text("0");
+    $('#history').text("0");
+
 }
