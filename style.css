@@ -51,6 +51,8 @@ header{
     border: .005vw solid black;
     border-radius: 15px;
     font-size: 40px;
+    display: flex;
+    align-items: center;
 
 }
 

@@ -13,10 +13,13 @@ $(document).ready(function() {
     $('.number').on("click", getNumbers);
     $('.operator').on("click",getOperators);
     $('.equal').on("click",doMath);
-    $('#clear').on("click",clearAll)
-
+    $('#clear').on("click",clearAll);
+    $('.prantesis').on("click",getPrantesis);
 
 });
+
+
+
 
 function getNumbers() {
 
@@ -64,11 +67,120 @@ function getOperators()
 
 }
 
+function getPrantesis()
+{
+    let prant = $(this).text();
+    mainArray.push(prant);
+    mainArray.push('');
+    display = mainArray.join("");
+    print();
+    allowNumber = true;
+    console.log(mainArray);
+
+}
+
+function spaceCollector()
+{
+    for (let i = 0 ; i < mainArray.length ; i++)
+    {
+        if (mainArray[i] === "")
+        {
+            mainArray.splice(i,1);
+        }
+    }
+}
+
 function doMath() {
 
-    console.log("main array after eqaul sign", mainArray);
+    spaceCollector();
+    console.log(mainArray);
+    let startPoint = null;
+    let endPoint = null;
 
     while (mainArray.length > 1) {
+
+        for (let i = mainArray.length - 1; i >= 0; i--)
+        {
+            if (mainArray[i] === "(")
+            {
+                console.log("first prantes is in ", i);
+                for (let j = i + 1; j < mainArray.length; j++)
+                {
+                    if (mainArray[j] === ")")
+                    {
+                        startPoint = i;
+                        endPoint = j;
+                        console.log("startPoint: ", startPoint);
+                        console.log("endPoint: ", endPoint);
+                        break;
+                    }
+                }
+
+                for (let i = startPoint + 1; i < endPoint; i++)
+                {
+
+                    if (mainArray[i] === "/")
+                    {
+                        if (parseFloat(mainArray[i + 1]) === 0)
+                        {
+                            printDown("ERROR");
+                            return;
+                        }
+
+                        else
+                        {
+                            mainArray[i - 1] = parseFloat(mainArray[i - 1]) / parseFloat(mainArray[i + 1]);
+                            mainArray.splice(i, 2);
+                            endPoint = endPoint -2;
+                            i = startPoint+1;
+                            console.log(mainArray);
+                        }
+
+                    }
+                    if (mainArray[i] === "×")
+                    {
+                        mainArray[i - 1] = parseFloat(mainArray[i - 1]) * parseFloat(mainArray[i + 1]);
+                        mainArray.splice(i, 2);
+                        endPoint = endPoint -2;
+                        i = startPoint+1;
+                        console.log(mainArray);
+
+                    }
+
+
+                }
+
+                for (let i = startPoint + 1; i < endPoint; i++)
+                {
+
+                    if (mainArray[i] === "+")
+                    {
+                        mainArray[i - 1] = parseFloat(mainArray[i - 1]) + parseFloat(mainArray[i + 1]);
+                        console.log(mainArray);
+                        mainArray.splice(i, 2);
+                        endPoint = endPoint -2;
+                        i = startPoint+1;
+                        console.log("+++++",mainArray);
+                    }
+
+                    if (mainArray[i] === "-")
+                    {
+                        mainArray[i - 1] = parseFloat(mainArray[i - 1]) - parseFloat(mainArray[i + 1]);
+                        mainArray.splice(i, 2);
+                        endPoint = endPoint -2;
+                        i = startPoint+1;
+                        console.log(mainArray);
+                    }
+
+                }
+                console.log(mainArray);
+                mainArray.splice(startPoint + 2, 1);
+                mainArray.splice(startPoint, 1);
+                console.log(mainArray);
+                i = startPoint;
+            }
+
+        }
 
         for (let i = 0; i <= mainArray.length-1; i++) {
 
@@ -87,7 +199,7 @@ function doMath() {
            }
 
 
-           if (mainArray[i] === "x") {
+           if (mainArray[i] === "×") {
                mainArray[i - 1] = parseFloat(mainArray[i - 1]) * parseFloat(mainArray[i + 1]);
                mainArray.splice(i, 2);
                i = i-1;
@@ -138,5 +250,7 @@ function print()
 function clearAll(){
     $('#result').text("0");
     $('#history').text("0");
+    mainArray = [''];
+
 
 }
