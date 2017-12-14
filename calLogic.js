@@ -2,6 +2,8 @@ let mainArray = [''];
 let display = null;
 let allowNumber = true;
 let decimalCounter = 0;
+let operatorCheck = true;
+let lastOperator = null;
 
 
 
@@ -52,18 +54,38 @@ function getNumbers() {
 
     }
 
+    operatorCheck = true;
+
+
+
 }
 
 function getOperators()
 {
-
     let operator = $(this).text();
-    mainArray.push(operator);
-    mainArray.push('');
-    display = mainArray.join("");
-    print();
-    allowNumber = true;
-    console.log(mainArray);
+
+    if (operatorCheck === true){
+        mainArray.push(operator);
+        mainArray.push('');
+        display = mainArray.join("");
+        print();
+        allowNumber = true;
+        console.log(mainArray);
+        lastOperator = operator;
+        operatorCheck = false;
+    }
+
+    else if (operator === lastOperator){
+        return;
+    }
+
+    else {
+        mainArray.splice(mainArray.length-2,1,operator);
+        lastOperator = operator;
+        console.log(mainArray);
+        print();
+    }
+
 
 }
 
@@ -88,6 +110,61 @@ function spaceCollector()
             mainArray.splice(i,1);
         }
     }
+
+    garbageCollector();
+
+}
+
+function garbageCollector()
+{
+    for (let i = 0 ; i < mainArray.length ; i++)
+    {
+        if (mainArray[i] === "(" && mainArray[i+1] === ")")
+        {
+            mainArray.splice(i+1,0,"0");
+        }
+
+        if (mainArray[i] === "(" && ( mainArray[i-1] !== "+" && mainArray[i-1] !== "-" && mainArray[i-1] !== "/" && mainArray[i-1] !== "×") && i!== 0)
+        {
+            mainArray.splice(i,0,"×");
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] === ")" && ( mainArray[i+1] !== "+" && mainArray[i-1] !== "-" && mainArray[i-1] !== "/" && mainArray[i-1] !== "×"))
+        {
+            mainArray.splice(i+1,0,"×");
+            console.log(mainArray);
+        }
+
+
+
+        if (mainArray[i] === "(" && mainArray[i+2] === ")")
+        {
+            mainArray.splice(i,1);
+            mainArray.splice(i+1,1);
+        }
+
+
+        if (mainArray[0]==='×' || mainArray[0]==='+' || mainArray[0]==='/')
+        {
+            mainArray.splice(0,1);
+        }
+
+        if (mainArray[0]==='-')
+        {
+
+            mainArray[1]=mainArray[1]-2*mainArray[1];
+            mainArray.splice(0,1);
+
+        }
+
+
+
+    }
+
+    display = mainArray.join("");
+    $('#history').text(display);
+
 }
 
 function doMath() {
@@ -223,7 +300,7 @@ function doMath() {
                 mainArray.splice(i, 2);
                 i = i-1;
                 console.log(mainArray);
-                console.log("lemgth:",mainArray.length);
+                console.log("length:",mainArray.length);
 
             }
         }
@@ -241,6 +318,7 @@ function doMath() {
 function print()
 {
     console.log("in print");
+    display = mainArray.join("");
     // $('#result').text(display);
     $('#history').text(display);
 
