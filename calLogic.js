@@ -51,6 +51,7 @@ function getNumbers() {
         mainArray = [''];
         mainArray[mainArray.length - 1] += value;
         display = mainArray.join("");
+        print();
         allowNumber = true;
 
     }
@@ -152,6 +153,15 @@ function spaceCollector()
 
 function prantFixer()
 {
+
+    for (let i = 0 ; i < mainArray.length ; i++)
+    {
+        if (mainArray[i] === "(" && mainArray[i+1] === "-")
+        {
+            mainArray.splice(i+1,2,(-1*mainArray[i+2]));
+        }
+    }
+
     for (let i = 0 ; i < mainArray.length ; i++)
     {
 
@@ -171,13 +181,7 @@ function prantFixer()
 
     }
 
-    for (let i = 0 ; i < mainArray.length ; i++)
-    {
-        if (mainArray[i] === "(" && mainArray[i+1] === "-")
-        {
-            mainArray.splice(i+1,2,(-1*mainArray[i+2]));
-        }
-    }
+
 
     for (let i = 0 ; i < mainArray.length ; i++){
         if (mainArray[i] === "(" && mainArray[i+1] === ")")
@@ -215,6 +219,20 @@ function doMath() {
         lastOperator = mainArray[mainArray.length - 1];
         mainArray.splice(-1);
         endingToOperator = true;
+    }
+
+
+    if (mainArray.length === 1)
+    {
+
+        mainArray.push(lastOperator, lastOperant);
+        console.log(mainArray);
+        displayArr = mainArray.join("");
+        print();
+        doMath();
+
+
+
     }
 
 
@@ -359,29 +377,20 @@ function doMath() {
 
     }
 
-    if (mainArray.length === 1)
-    {
-        // if (endingToOperator === true){
-        //     mainArray.push(lastOperator,lastOperant);
-        //     doMath();
-        // }
-        //
-        // else{
-        //     mainArray.push(lastOperator,lastOperant);
-        //     console.log(mainArray);
-        //     // displayArr=mainArr.join("");
-            print();
-            allowNumber = false;
-        // }
-
-
-
+    if (endingToOperator === true){
+        mainArray.push(lastOperator,lastOperant);
+        doMath();
+        operatorCheck = true;
     }
+
+
+
 
 
     // display = mainArray.join("");
     console.log("display:",display);
-    $('#result').text(mainArray)
+    $('#result').text(mainArray);
+    allowNumber = false;
 
 }
 
@@ -400,6 +409,5 @@ function clearAll(){
     $('#result').text("0");
     $('#history').text("0");
     mainArray = [''];
-
 
 }
