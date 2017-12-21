@@ -2,8 +2,9 @@ let mainArray = [''];
 let display = null;
 let allowNumber = true;
 let decimalCounter = 0;
-let operatorCheck = true;
+let operatorCheck = false;
 let lastOperator = null;
+let lastOperant = null;
 
 
 
@@ -64,22 +65,55 @@ function getOperators()
 {
     let operator = $(this).text();
 
-    if (operatorCheck === true){
+    if ( mainArray[0] === ""){
+        if(operator !== "-"){
+            return;
+        }
+
+        else{
+            mainArray[1] = mainArray[1] - 2*mainArray[1];
+            mainArray.splice(0,2);
+        }
+
+    }
+
+    if (mainArray[mainArray.length-2] === "(")
+    {
+
+        if (operator === "-")
+        {
+            mainArray.push(operator);
+            display = mainArray.join("");
+            print();
+            mainArray.push('');
+            allowNumber = true;
+            console.log(mainArray);
+            lastOperator = operator;
+            operatorCheck = false;
+        }
+
+        else {
+            return;
+        }
+
+    }
+
+
+
+    if (operatorCheck === true)
+    {
         mainArray.push(operator);
-        mainArray.push('');
         display = mainArray.join("");
         print();
+        mainArray.push('');
         allowNumber = true;
         console.log(mainArray);
         lastOperator = operator;
         operatorCheck = false;
     }
 
-    else if (operator === lastOperator){
-        return;
-    }
-
-    else {
+    else if (operator !== lastOperator)
+    {
         mainArray.splice(mainArray.length-2,1,operator);
         lastOperator = operator;
         console.log(mainArray);
@@ -109,20 +143,18 @@ function spaceCollector()
         {
             mainArray.splice(i,1);
         }
+
     }
 
-    garbageCollector();
+    console.log("after spaces Removal",mainArray);
 
 }
 
-function garbageCollector()
+function prantFixer()
 {
     for (let i = 0 ; i < mainArray.length ; i++)
     {
-        if (mainArray[i] === "(" && mainArray[i+1] === ")")
-        {
-            mainArray.splice(i+1,0,"0");
-        }
+
 
         if (mainArray[i] === "(" && ( mainArray[i-1] !== "+" && mainArray[i-1] !== "-" && mainArray[i-1] !== "/" && mainArray[i-1] !== "×") && i!== 0)
         {
@@ -130,12 +162,28 @@ function garbageCollector()
             console.log(mainArray);
         }
 
-        if (mainArray[i] === ")" && ( mainArray[i+1] !== "+" && mainArray[i-1] !== "-" && mainArray[i-1] !== "/" && mainArray[i-1] !== "×"))
+        if (mainArray[i] === ")" && mainArray[i+1]!== undefined &&( mainArray[i+1] !== "+" && mainArray[i-1] !== "-" && mainArray[i-1] !== "/" && mainArray[i-1] !== "×"))
         {
             mainArray.splice(i+1,0,"×");
             console.log(mainArray);
         }
 
+
+    }
+
+    for (let i = 0 ; i < mainArray.length ; i++)
+    {
+        if (mainArray[i] === "(" && mainArray[i+1] === "-")
+        {
+            mainArray.splice(i+1,2,(-1*mainArray[i+2]));
+        }
+    }
+
+    for (let i = 0 ; i < mainArray.length ; i++){
+        if (mainArray[i] === "(" && mainArray[i+1] === ")")
+        {
+            mainArray.splice(i+1,0,"0");
+        }
 
 
         if (mainArray[i] === "(" && mainArray[i+2] === ")")
@@ -143,24 +191,9 @@ function garbageCollector()
             mainArray.splice(i,1);
             mainArray.splice(i+1,1);
         }
-
-
-        if (mainArray[0]==='×' || mainArray[0]==='+' || mainArray[0]==='/')
-        {
-            mainArray.splice(0,1);
-        }
-
-        if (mainArray[0]==='-')
-        {
-
-            mainArray[1]=mainArray[1]-2*mainArray[1];
-            mainArray.splice(0,1);
-
-        }
-
-
-
     }
+
+    console.log("after prants applied",mainArray);
 
     display = mainArray.join("");
     $('#history').text(display);
@@ -170,11 +203,29 @@ function garbageCollector()
 function doMath() {
 
     spaceCollector();
+    prantFixer();
     console.log(mainArray);
     let startPoint = null;
     let endPoint = null;
+    let endingToOperator = false;
+
+    if (mainArray[mainArray.length-1]==='×' || mainArray[mainArray.length-1]==='/' || mainArray[mainArray.length-1]==='+'
+        || mainArray[mainArray.length-1]==='-')
+    {
+        lastOperator = mainArray[mainArray.length - 1];
+        mainArray.splice(-1);
+        endingToOperator = true;
+    }
+
+
+
 
     while (mainArray.length > 1) {
+
+        if (mainArray.length === 3) {
+            lastOperator = mainArray[1];
+            lastOperant = mainArray[2];
+        }
 
         for (let i = mainArray.length - 1; i >= 0; i--)
         {
@@ -200,7 +251,7 @@ function doMath() {
                     {
                         if (parseFloat(mainArray[i + 1]) === 0)
                         {
-                            printDown("ERROR");
+                            $("#result").text("ERROR");
                             return;
                         }
 
@@ -263,7 +314,7 @@ function doMath() {
 
            if (mainArray[i] === "/") {
                if (parseFloat(mainArray[i + 1]) === 0) {
-                   console.log("Error");
+                   $("#result").text("ERROR");
                    return;
                }
 
@@ -307,6 +358,26 @@ function doMath() {
 
 
     }
+
+    if (mainArray.length === 1)
+    {
+        // if (endingToOperator === true){
+        //     mainArray.push(lastOperator,lastOperant);
+        //     doMath();
+        // }
+        //
+        // else{
+        //     mainArray.push(lastOperator,lastOperant);
+        //     console.log(mainArray);
+        //     // displayArr=mainArr.join("");
+            print();
+            allowNumber = false;
+        // }
+
+
+
+    }
+
 
     // display = mainArray.join("");
     console.log("display:",display);
