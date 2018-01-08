@@ -13,24 +13,6 @@ let lastOperant = null;
 
 $(document).ready(function() {
 
-    let canvas = document.querySelector('canvas');
-    // canvas.width = window.innerWidth * 30/100;
-    // canvas.height = window.innerHeight * 80/100;
-
-    let c = canvas.getContext("2d");
-    console.log("height:"+canvas.height);
-    console.log("width:"+canvas.width);
-    c.beginPath();
-    c.moveTo(canvas.width*.4,canvas.height*.05);
-    c.lineTo(canvas.width*.4,canvas.height*.95);
-    c.stroke();
-    c.closePath();
-    c.beginPath();
-    c.moveTo(canvas.width*.05,canvas.height*.6);
-    c.lineTo(canvas.width*.95,canvas.height*.6);
-    c.stroke();
-    c.closePath();
-
     $('.number').on("click", getNumbers);
     $('.operator').on("click",getOperators);
     $('.equal').on("click",doMath);
@@ -102,7 +84,7 @@ function getOperators()
 {
     let operator = $(this).text();
 
-    if ( mainArray[0] === ""){
+    if ( mainArray[0] === "" && mainArray[1] !== "("){
         if(operator !== "-"){
             return;
         }
@@ -114,26 +96,26 @@ function getOperators()
 
     }
 
-    // if (mainArray[mainArray.length-2] === "(")
-    // {
-    //
-    //     if (operator === "-")
-    //     {
-    //         mainArray.push(operator);
-    //         display = mainArray.join("");
-    //         print();
-    //         mainArray.push('');
-    //         allowNumber = true;
-    //         console.log(mainArray);
-    //         lastOperator = operator;
-    //         operatorCheck = false;
-    //     }
-    //
-    //     else {
-    //         return;
-    //     }
-    //
-    // }
+    if (mainArray[mainArray.length-2] === "(" && mainArray[mainArray.length-1] === "")
+    {
+
+        if (operator === "-")
+        {
+            mainArray.push(operator);
+            display = mainArray.join("");
+            print();
+            mainArray.push('');
+            allowNumber = true;
+            console.log(mainArray);
+            lastOperator = operator;
+            operatorCheck = false;
+        }
+
+        else if (mainArray[mainArray.length-2] === "(") {
+            return;
+        }
+
+    }
 
 
 
@@ -198,17 +180,20 @@ function prantFixer()
         }
     }
 
+
+
+
     for (let i = 0 ; i < mainArray.length ; i++)
     {
 
 
-        if (mainArray[i] === "(" && ( mainArray[i-1] !== "+" && mainArray[i-1] !== "-" && mainArray[i-1] !== "/" && mainArray[i-1] !== "×") && i!== 0)
+        if (mainArray[i] === "(" && ( mainArray[i-1] !== "+" && mainArray[i-1] !== "-" && mainArray[i-1] !== "/" && mainArray[i-1] !== "×" && mainArray[i-1] !== "(" ) && i!== 0)
         {
             mainArray.splice(i,0,"×");
             console.log(mainArray);
         }
 
-        if (mainArray[i] === ")" && mainArray[i+1]!== undefined &&( mainArray[i+1] !== "+" && mainArray[i-1] !== "-" && mainArray[i-1] !== "/" && mainArray[i-1] !== "×"))
+        if (mainArray[i] === ")" && mainArray[i+1]!== undefined &&( mainArray[i+1] !== "+" && mainArray[i+1] !== "-" && mainArray[i+1] !== "/" && mainArray[i+1] !== "×" && mainArray[i+1] !== ")" ))
         {
             mainArray.splice(i+1,0,"×");
             console.log(mainArray);
@@ -217,21 +202,23 @@ function prantFixer()
 
     }
 
-
-
-    for (let i = 0 ; i < mainArray.length ; i++){
-        if (mainArray[i] === "(" && mainArray[i+1] === ")")
-        {
-            mainArray.splice(i+1,0,"0");
+    for (let i = mainArray.length - 1; i >= 0; i--) {
+        if (mainArray[i] === "(" && mainArray[i + 1] === ")") {
+            mainArray.splice(i + 1, 0, "0");
         }
+    }
 
-
+    for (let i = mainArray.length - 1; i >= 0; i--) {
         if (mainArray[i] === "(" && mainArray[i+2] === ")")
         {
             mainArray.splice(i,1);
             mainArray.splice(i+1,1);
+            console.log(mainArray);
         }
     }
+
+
+
 
     console.log("after prants applied",mainArray);
 
@@ -244,8 +231,12 @@ function doMath() {
 
     spaceCollector();
     prantFixer();
+
     if (mainArray.length === 1)
     {
+        if (lastOperant === null){
+            return;
+        }
 
         mainArray.push(lastOperator, lastOperant);
         console.log(mainArray);
@@ -360,6 +351,8 @@ function doMath() {
             }
 
         }
+
+        // prantFixer();
 
         for (let i = 0; i <= mainArray.length-1; i++) {
 
@@ -697,6 +690,17 @@ function plot()
 {
     let canvas = document.querySelector('canvas');
     let c = canvas.getContext("2d");
+    canvas.width = canvas.width
+    c.beginPath();
+    c.moveTo(canvas.width*.4,canvas.height*.05);
+    c.lineTo(canvas.width*.4,canvas.height*.95);
+    c.stroke();
+    c.closePath();
+    c.beginPath();
+    c.moveTo(canvas.width*.05,canvas.height*.6);
+    c.lineTo(canvas.width*.95,canvas.height*.6);
+    c.stroke();
+    c.closePath();
     let a = parseInt($("#a").val());
     let b = parseInt($("#b").val());
     let c1 = parseInt($("#c").val());
