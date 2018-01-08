@@ -1,3 +1,7 @@
+/*body{*/
+    /*margin:0;*/
+/*}*/
+
 header{
     display: flex;
     align-items: center;
@@ -38,22 +42,61 @@ header{
 
 }
 
+canvas{
+    border: .001vw solid black;
+    width: 25vw;
+    height: 25vw;
+    margin-top: 1vw;
+
+}
+
+
+input{
+    width: 5vw;
+
+}
 .rightSideBody{
     width: 30vw;
     height: 80vh;
-    /*display: inline-block;*/
+    /*display: none;*/
     /*border : .001vw solid black;*/
 }
 
 .screen{
     width:inherit;
-    height: 10vh;
+    height: 8vh;
     border: .005vw solid black;
     border-radius: 15px;
     font-size: 40px;
     display: flex;
     align-items: center;
+    font-family: 'Orbitron', sans-serif;
 
+}
+
+.modeContainer{
+    display: flex;
+    width:inherit;
+    height: 4vh;
+    align-items:center;
+    justify-content: space-around;
+    /*border: .005vw solid black;*/
+}
+
+.modeButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2vh;
+    width: 8vw;
+    background-color: cornflowerblue ;
+    border: .001vw solid black;
+    border-radius: 15px;
+
+}
+
+#standard{
+    background-color: indianred ;
 }
 
 .row{

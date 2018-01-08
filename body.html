@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="calLogic.js"></script>
@@ -11,10 +12,25 @@
     <header>Calculator</header>
 
     <div class ="body">
-        <div class="leftSideBody"></div>
+        <div class="leftSideBody">
+            <p> Enter Your Equation in following format: y = ax^2 + bx + c </p>
+            <p> a = <input type="number" id="a"> </p>
+            <p> b = <input type="number" id="b"> </p>
+            <p> c = <input type="number" id="c"> </p>
+            <p>  <button type="submit" id ="plot"> plot</button></p>
+            <canvas>
+
+            </canvas>
+
+        </div>
         <div class="mainCalBody">
             <div class="screen" id="history"></div>
             <div class="screen" id="result"></div>
+            <div class="modeContainer">
+                <div class="modeButton" id="standard">Standard</div>
+                <div class="modeButton" id="scientific">Scientific</div>
+                <div class="modeButton" id="plot">Plot</div>
+            </div>
             <div class="row">
                 <div class="button" id="clear">C</div>
                 <div class="button prantesis" id="openPrant">(</div>
@@ -51,7 +67,37 @@
             </div>
 
         </div>
-        <div class="rightSideBody"></div>
+        <div class="rightSideBody">
+            <div class="row">
+                <div class="button" id="sin">sin</div>
+                <div class="button" id="cos">cos</div>
+            </div>
+            <div class="row">
+                <div class="button" id="tan">tan</div>
+                <div class="button" id="cot">cot</div>
+            </div>
+            <div class="row">
+                <div class="button" id="factoriel">x!</div>
+                <div class="button" id="sqr">sqr</div>
+            </div>
+            <div class="row">
+                <div class="button" id="power">x^y</div>
+                <div class="button" id="inverse">1/x</div>
+            </div>
+            <div class="row">
+                <div class="button" id="logarithm">log</div>
+                <div class="button" id="ln">ln</div>
+            </div>
+            <div class="row">
+                <div class="button" id="percent">%</div>
+                <div class="button" id="sqrt">√</div>
+            </div>
+            <div class="row">
+                <div class="button" id="euler">e</div>
+                <div class="button" id="pi">Π</div>
+            </div>
+
+        </div>
     </div>
 
 

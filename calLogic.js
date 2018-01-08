@@ -13,11 +13,47 @@ let lastOperant = null;
 
 $(document).ready(function() {
 
+    let canvas = document.querySelector('canvas');
+    // canvas.width = window.innerWidth * 30/100;
+    // canvas.height = window.innerHeight * 80/100;
+
+    let c = canvas.getContext("2d");
+    console.log("height:"+canvas.height);
+    console.log("width:"+canvas.width);
+    c.beginPath();
+    c.moveTo(canvas.width*.4,canvas.height*.05);
+    c.lineTo(canvas.width*.4,canvas.height*.95);
+    c.stroke();
+    c.closePath();
+    c.beginPath();
+    c.moveTo(canvas.width*.05,canvas.height*.6);
+    c.lineTo(canvas.width*.95,canvas.height*.6);
+    c.stroke();
+    c.closePath();
+
     $('.number').on("click", getNumbers);
     $('.operator').on("click",getOperators);
     $('.equal').on("click",doMath);
     $('#clear').on("click",clearAll);
     $('.prantesis').on("click",getPrantesis);
+    $("#sin").on("click",sinCal);
+    $("#cos").on("click",cosCal);
+    $("#tan").on("click",tanCal);
+    $("#cot").on("click",cotCal);
+    $("#logarithm").on("click",logCal);
+    $("#ln").on("click",lnCal);
+    $("#factoriel").on("click",factorCal);
+    $("#sqrt").on("click",sqrtCal);
+    $("#sqr").on("click",sqrCal);
+    $("#power").on("click",powerCal);
+    $("#percent").on("click",percentCal);
+    $("#euler").on("click",eulerCal);
+    $("#pi").on("click",piCal);
+
+    $("#plot").on("click",plot)
+
+
+
 
 });
 
@@ -78,26 +114,26 @@ function getOperators()
 
     }
 
-    if (mainArray[mainArray.length-2] === "(")
-    {
-
-        if (operator === "-")
-        {
-            mainArray.push(operator);
-            display = mainArray.join("");
-            print();
-            mainArray.push('');
-            allowNumber = true;
-            console.log(mainArray);
-            lastOperator = operator;
-            operatorCheck = false;
-        }
-
-        else {
-            return;
-        }
-
-    }
+    // if (mainArray[mainArray.length-2] === "(")
+    // {
+    //
+    //     if (operator === "-")
+    //     {
+    //         mainArray.push(operator);
+    //         display = mainArray.join("");
+    //         print();
+    //         mainArray.push('');
+    //         allowNumber = true;
+    //         console.log(mainArray);
+    //         lastOperator = operator;
+    //         operatorCheck = false;
+    //     }
+    //
+    //     else {
+    //         return;
+    //     }
+    //
+    // }
 
 
 
@@ -208,20 +244,6 @@ function doMath() {
 
     spaceCollector();
     prantFixer();
-    console.log(mainArray);
-    let startPoint = null;
-    let endPoint = null;
-    let endingToOperator = false;
-
-    if (mainArray[mainArray.length-1]==='×' || mainArray[mainArray.length-1]==='/' || mainArray[mainArray.length-1]==='+'
-        || mainArray[mainArray.length-1]==='-')
-    {
-        lastOperator = mainArray[mainArray.length - 1];
-        mainArray.splice(-1);
-        endingToOperator = true;
-    }
-
-
     if (mainArray.length === 1)
     {
 
@@ -234,8 +256,19 @@ function doMath() {
 
 
     }
+    functionColector();
+    console.log(mainArray);
+    let startPoint = null;
+    let endPoint = null;
+    let endingToOperator = false;
 
-
+    if (mainArray[mainArray.length-1]==='×' || mainArray[mainArray.length-1]==='/' || mainArray[mainArray.length-1]==='+'
+        || mainArray[mainArray.length-1]==='-')
+    {
+        lastOperator = mainArray[mainArray.length - 1];
+        mainArray.splice(-1);
+        endingToOperator = true;
+    }
 
 
     while (mainArray.length > 1) {
@@ -411,3 +444,289 @@ function clearAll(){
     mainArray = [''];
 
 }
+
+function sinCal()
+{
+    mainArray.push("sin","");
+    display = mainArray.join("");
+    print();
+}
+
+function cosCal()
+{
+    mainArray.push("cos","");
+    display = mainArray.join("");
+    print();
+}
+
+function tanCal()
+{
+    mainArray.push("tan","");
+    display = mainArray.join("");
+    print();
+}
+
+function cotCal()
+{
+    mainArray.push("cot","");
+    display = mainArray.join("");
+    print();
+}
+
+function logCal()
+{
+    mainArray.push("log","");
+    display = mainArray.join("");
+    print();
+}
+
+function lnCal()
+{
+    mainArray.push("ln","");
+    display = mainArray.join("");
+    print();
+}
+
+function factorCal()
+{
+    mainArray.push("!","");
+    display = mainArray.join("");
+    print();
+}
+
+function sqrtCal()
+{
+    mainArray.push("√","");
+    display = mainArray.join("");
+    print();
+}
+
+function sqrCal()
+{
+    mainArray.push("^","2","");
+    display = mainArray.join("");
+    print();
+}
+
+function powerCal()
+{
+    mainArray.push("^","");
+    display = mainArray.join("");
+    print();
+}
+
+function percentCal()
+{
+    mainArray.push("%","");
+    display = mainArray.join("");
+    print();
+}
+
+function eulerCal()
+{
+    mainArray.push(Math.E);
+    display = mainArray.join("");
+    print();
+}
+
+function piCal()
+{
+    mainArray.push(Math.PI);
+    display = mainArray.join("");
+    print();
+}
+
+
+function functionColector()
+{
+
+    for (let i=mainArray.length-1; i>=0; i--)
+    {
+        if (mainArray[i] === "sin")
+        {
+            mainArray[i] = Math.sin(mainArray[i+1]/180*Math.PI);
+            if (mainArray[i]<1e-15){mainArray[i] = 0;}
+            mainArray.splice(i+1,1);
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] === "cos")
+        {
+            mainArray[i] = Math.cos(mainArray[i+1]/180*Math.PI);
+            if (mainArray[i]<1e-15){mainArray[i] = 0;}
+            mainArray.splice(i+1,1);
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] === "tan")
+        {
+            if (Math.cos(mainArray[i+1]/180*Math.PI)<1e-15)
+            {
+                $("#result").text("ERROR");
+                return;
+            }
+            mainArray[i] = Math.tan(mainArray[i+1]/180*Math.PI);
+            console.log("here4",mainArray[i]);
+            mainArray.splice(i+1,1);
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] === "cot")
+        {
+            if (Math.sin(mainArray[i+1]/180*Math.PI)<1e-15)
+            {
+                error = 1;
+                return;
+            }
+            mainArray[i] = 1/(Math.tan(mainArray[i+1]/180*Math.PI));
+            mainArray.splice(i+1,1);
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] === "log")
+        {
+            if (mainArray[i+1] <= 0)
+            {
+                $("#result").text("ERROR");
+                return;
+            }
+            mainArray[i] = Math.log10(mainArray[i+1]);
+            mainArray.splice(i+1,1);
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] === "ln")
+        {
+            if (mainArray[i+1] <= 0)
+            {
+                $("#result").text("ERROR");
+                return;
+            }
+            mainArray[i] = Math.log(mainArray[i+1]);
+            mainArray.splice(i+1,1);
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] === "!")
+        {
+            mainArray[i-1] = factoriel(mainArray[i-1]);
+            mainArray.splice(i,1);
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] === "√")
+        {
+            mainArray[i] = Math.sqrt(mainArray[i+1]);
+            mainArray.splice(i+1,1);
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] === "^")
+        {
+            mainArray[i-1] = power(mainArray[i-1],mainArray[i+1]);
+            mainArray.splice(i,2);
+            console.log(mainArray);
+        }
+
+        if (mainArray[i] ==="%")
+        {
+            console.log("1");
+            if (i === 0)
+            {
+                console.log("2");
+                mainArray[0] = 0;
+                mainArray.splice(1,2);
+            }
+            else
+            {
+                mainArray[i-1] = mainArray[i-1]*mainArray[i+1]/100;
+                mainArray.splice(i,2);
+                console.log(mainArray);
+            }
+
+
+
+        }
+        // mainArr[i] = parseFloat(mainArr[i]);
+        // mainArr[i] = mainArr[i].toFixed(15);
+
+    }
+
+    if (mainArray.length === 1)
+    {
+        console.log("3");
+        displayArray = mainArray.join("");
+        print();
+        // printDown(mainArray);
+
+    }
+}
+
+function factoriel(num)
+{
+    let answer = 1;
+    for (let i=1; i<=num; i++)
+    {
+        answer = answer * i;
+    }
+    return answer;
+}
+
+function power(num,power)
+{
+    if (power>=2)
+    {
+        let temp = 1;
+        for (let i=1; i<=power; i++)
+        {
+            temp = temp*num;
+        }
+        return temp;
+    }
+
+    if (power === 0)
+    {
+        num = 1;
+        return num;
+    }
+
+
+}
+
+function plot()
+{
+    let canvas = document.querySelector('canvas');
+    let c = canvas.getContext("2d");
+    let a = parseInt($("#a").val());
+    let b = parseInt($("#b").val());
+    let c1 = parseInt($("#c").val());
+    let x0 = -7;
+    let y0 = null;
+    let y1 = null;
+    let xp0 = null;
+    let xp1 = null;
+
+    for (let x = -6, counter = 1; x <= 11 ; x+=1,counter++)
+    {
+
+        y0 = a * Math.pow(x0,2)+ b*x0 + c1;
+        y1 = a * Math.pow(x,2)+ b*x + c1;
+
+        y0 = (.6 - y0*.05)*canvas.height;
+        y1 = (.6 - y1*.05)*canvas.height;
+        xp0 = (.4 + x0*.05)*canvas.width;
+        xp1 = (x*.05 + .4)*canvas.width;
+
+        c.beginPath();
+        c.moveTo(xp0, y0);
+        c.lineTo(xp1,y1);
+        c.stroke();
+        c.closePath();
+        x0 = x;
+
+    }
+
+}
+
+
+
